@@ -15,21 +15,19 @@
                 <el-descriptions-item label="域名">{{baseInfo?.domain}}</el-descriptions-item>
                 <el-descriptions-item label="地址" :span="2">{{baseInfo?.city}}</el-descriptions-item>
                 <el-descriptions-item label="标签">
-                    <el-tag v-for="(item) in baseInfo?.labelList" >{{ item }}</el-tag>
+                    <el-tag v-for="(item) in baseInfo?.labelList" :key="item">{{ item }}</el-tag>
                 </el-descriptions-item>
-                <el-descriptions-item label="分析笔记">{{baseInfo?.judged}}
-                </el-descriptions-item>
+                <el-descriptions-item label="分析笔记">{{baseInfo?.judged}}</el-descriptions-item>
             </el-descriptions>
         </div>
         <div class="base_info">
-            <el-descriptions label-class-name="my-label" :data="baseInfo"  title="Whois信息配置" :column="2" :border="2"  direction="vertical">
-                <el-descriptions-item label="IP">{{baseInfo?.ip}}</el-descriptions-item>
-                <el-descriptions-item label="域名">{{baseInfo?.domain}}</el-descriptions-item>
-                <el-descriptions-item label="地址" :span="2">{{baseInfo?.city}}</el-descriptions-item>
-                <el-descriptions-item label="标签">
-                    <el-tag v-for="(item) in baseInfo?.labelList" >{{ item }}</el-tag>
-                </el-descriptions-item>
-                <el-descriptions-item label="分析笔记">{{baseInfo?.judged}}
+            <el-descriptions label-class-name="my-label" :data="whoisVo"  title="Whois信息配置" :column="2" :border="2"  direction="vertical">
+                <el-descriptions-item label="主机">{{whoisVo?.host}}</el-descriptions-item>
+                <el-descriptions-item label="注册商">{{whoisVo?.registrar}}</el-descriptions-item>
+                <el-descriptions-item label="联系人" >{{whoisVo?.contactPerson}}</el-descriptions-item>
+                <el-descriptions-item label="邮箱">{{whoisVo?.email}}</el-descriptions-item>
+                <el-descriptions-item label="电话">{{whoisVo?.phone}}</el-descriptions-item>
+                <el-descriptions-item label="过期时间">{{whoisVo?.expirationDate}}
                 </el-descriptions-item>
             </el-descriptions>
         </div>
@@ -60,7 +58,7 @@ export default defineComponent({
         const layoutStore = useLayoutStore();
         const searchText = ref("");
         const baseInfo = ref<BaseInfoType>();
-        const baseInfoCp = baseInfo; 
+        const whoisVo = ref<whoisType>(); 
         const collapse = computed(() => {
             return layoutStore.state.isCollapse;
         });
@@ -75,6 +73,7 @@ export default defineComponent({
             })
                 .then((res:any) => {
                     baseInfo.value = res
+                    whoisVo.value = res.whoisVo
                     console.log(baseInfo);
                 })
         };
@@ -83,6 +82,7 @@ export default defineComponent({
             onSearch,
             collapse,
             baseInfo,
+            whoisVo,
         };
     },
 });
